@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Cost Calculator</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.4;
+            padding: 10px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        header h1 {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            font-size: 0.85em;
+        }
+        .tab.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 12px;
+            background-color: white;
+            border-radius: 0 5px 5px 5px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        input, select {
+            width: 100%;
+            padding: 7px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        button {
+            background-color: var(--secondary);
+            color: white;
+            padding: 7px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result-card {
+            background-color: #f9f9f9;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 12px;
+            border: 1px solid #eee;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85em;
+        }
+        .total {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .rate-display {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Construction Cost Calculator</h1>
+            <p>Estimate your project costs accurately</p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="material">Material Estimation</div>
+            <div class="tab" data-tab="labor">Labor Costs</div>
+        </div>
+        
+        <div id="material" class="tab-content active">
+            <div class="form-group">
+                <label for="project-type">Project Type</label>
+                <select id="project-type">
+                    <option value="residential">Residential</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="renovation">Renovation</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="area">Total Area (sq.ft)</label>
+                <input type="number" id="area" placeholder="Enter area" maxlength="5">
+            </div>
+            
+            <div class="form-group">
+                <label for="material-quality">Material Quality</label>
+                <select id="material-quality">
+                    <option value="economy">Economy</option>
+                    <option value="standard" selected>Standard</option>
+                    <option value="premium">Premium</option>
+                    <option value="luxury">Luxury</option>
+                </select>
+            </div>
+            
+            <div class="rate-display">
+                <span>Cost per sq.ft: </span>
+                <span id="cost-per-sqft-display">$120</span>
+            </div>
+            
+            <button id="calculate-material">Calculate</button>
+            <button id="clear-material">Clear</button>
+            
+            <div id="material-result" class="result-card" style="display: none;">
+                <h3>Material Cost Estimation</h3>
+                <div class="result-row">
+                    <span>Construction Type:</span>
+                    <span id="result-type"></span>
+                </div>
+                <div class="result-row">
+                    <span>Area:</span>
+                    <span id="result-area"></span>
+                </div>
+                <div class="result-row">
+                    <span>Quality:</span>
+                    <span id="result-quality"></span>
+                </div>
+                <div class="result-row">
+                    <span>Cost per sq.ft:</span>
+                    <span id="cost-per-sqft"></span>
+                </div>
+                <div class="result-row total">
+                    <span>Total Material Cost:</span>
+                    <span id="total-material-cost"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="labor" class="tab-content">
+            <div class="form-group">
+                <label for="labor-type">Labor Type</label>
+                <select id="labor-type">
+                    <option value="mason">Mason</option>
+                    <option value="carpenter">Carpenter</option>
+                    <option value="electrician">Electrician</option>
+                    <option value="plumber">Plumber</option>
+                    <option value="painter">Painter</option>
+                </select>
+            </div>
+            
+            <div class="rate-display" id="labor-rate-display">
+                Mason 1-day charge: $200
+            </div>
+            
+            <div class="form-group">
+                <label for="labor-days">Number of Days</label>
+                <input type="number" id="labor-days" placeholder="Enter days" maxlength="2">
+            </div>
+            
+            <div class="form-group">
+                <label for="labor-count">Number of Workers</label>
+                <input type="number" id="labor-count" value="1" min="1" max="99" maxlength="2">
+            </div>
+            
+            <button id="calculate-labor">Calculate</button>
+            <button id="clear-labor">Clear</button>
+            
+            <div id="labor-result" class="result-card" style="display: none;">
+                <h3>Labor Cost Calculation</h3>
+                <div class="result-row">
+                    <span>Labor Type:</span>
+                    <span id="result-labor-type"></span>
+                </div>
+                <div class="result-row">
+                    <span>Daily Rate:</span>
+                    <span id="labor-daily-rate"></span>
+                </div>
+                <div class="result-row">
+                    <span>Number of Workers:</span>
+                    <span id="result-labor-count"></span>
+                </div>
+                <div class="result-row">
+                    <span>Total Days:</span>
+                    <span id="result-labor-days"></span>
+                </div>
+                <div class="result-row total">
+                    <span>Total Labor Cost:</span>
+                    <span id="total-labor-cost"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Labor rates configuration
+            const laborRates = {
+                mason: 200,
+                carpenter: 180,
+                electrician: 220,
+                plumber: 190,
+                painter: 150
+            };
+            
+            // Material costs configuration
+            const costMap = {
+                economy: 80,
+                standard: 120,
+                premium: 180,
+                luxury: 250
+            };
+            
+            // Project type modifiers
+            const projectModifiers = {
+                residential: 1.0,
+                commercial: 1.2,
+                renovation: 0.8
+            };
+            
+            // Update labor rate display
+            function updateLaborRate() {
+                const laborType = document.getElementById('labor-type').value;
+                const rate = laborRates[laborType];
+                const displayName = laborType.charAt(0).toUpperCase() + laborType.slice(1);
+                document.getElementById('labor-rate-display').textContent = 
+                    `${displayName} 1-day charge: $${rate}`;
+            }
+            
+            // Update cost per sq.ft display
+            function updateCostPerSqFt() {
+                const quality = document.getElementById('material-quality').value;
+                document.getElementById('cost-per-sqft-display').textContent = 
+                    '$' + costMap[quality];
+            }
+            
+            // Tab switching functionality
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab, .tab-content').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+                });
+            });
+            
+            // Material calculation
+            document.getElementById('calculate-material').addEventListener('click', function() {
+                const area = parseFloat(document.getElementById('area').value);
+                if (!area || area <= 0) {
+                    alert('Please enter a valid area');
+                    return;
+                }
+                
+                const quality = document.getElementById('material-quality').value;
+                const projectType = document.getElementById('project-type').value;
+                
+                const baseRate = costMap[quality];
+                const adjustedRate = baseRate * projectModifiers[projectType];
+                const baseCost = area * adjustedRate;
+                const gst = baseCost * 0.05; // 5% GST
+                const totalCost = baseCost + gst;
+                
+                // Display results
+                document.getElementById('result-type').textContent = 
+                    document.getElementById('project-type').options[document.getElementById('project-type').selectedIndex].text;
+                document.getElementById('result-area').textContent = area.toLocaleString() + ' sq.ft';
+                document.getElementById('result-quality').textContent = 
+                    document.getElementById('material-quality').options[document.getElementById('material-quality').selectedIndex].text;
+                document.getElementById('cost-per-sqft').textContent = '$' + adjustedRate.toFixed(2);
+                document.getElementById('total-material-cost').textContent = '$' + totalCost.toLocaleString('en-IN') + ' (incl. GST)';
+                document.getElementById('material-result').style.display = 'block';
+            });
+            
+            // Labor calculation
+            document.getElementById('calculate-labor').addEventListener('click', function() {
+                const days = parseFloat(document.getElementById('labor-days').value);
+                const count = parseFloat(document.getElementById('labor-count').value) || 1;
+                
+                if (!days || days <= 0) {
+                    alert('Please enter valid number of days');
+                    return;
+                }
+                
+                const laborType = document.getElementById('labor-type').value;
+                const dailyRate = laborRates[laborType];
+                const totalCost = dailyRate * days * count;
+                
+                // Display results
+                document.getElementById('result-labor-type').textContent = 
+                    laborType.charAt(0).toUpperCase() + laborType.slice(1);
+                document.getElementById('labor-daily-rate').textContent = '$' + dailyRate;
+                document.getElementById('result-labor-count').textContent = count;
+                document.getElementById('result-labor-days').textContent = days;
+                document.getElementById('total-labor-cost').textContent = '$' + totalCost.toLocaleString('en-IN');
+                document.getElementById('labor-result').style.display = 'block';
+            });
+            
+            // Clear material form
+            document.getElementById('clear-material').addEventListener('click', function() {
+                document.getElementById('area').value = '';
+                document.getElementById('material-result').style.display = 'none';
+            });
+            
+            // Clear labor form
+            document.getElementById('clear-labor').addEventListener('click', function() {
+                document.getElementById('labor-days').value = '';
+                document.getElementById('labor-count').value = '1';
+                document.getElementById('labor-result').style.display = 'none';
+            });
+            
+            // Input restrictions
+            document.getElementById('area').addEventListener('input', function() {
+                if (this.value.length > 5) {
+                    this.value = this.value.slice(0, 5);
+                }
+            });
+            
+            document.getElementById('labor-days').addEventListener('input', function() {
+                if (this.value.length > 2) {
+                    this.value = this.value.slice(0, 2);
+                }
+            });
+            
+            document.getElementById('labor-count').addEventListener('input', function() {
+                if (this.value.length > 2) {
+                    this.value = this.value.slice(0, 2);
+                }
+                if (parseInt(this.value) < 1) {
+                    this.value = '1';
+                }
+            });
+            
+            // Initialize displays
+            document.getElementById('labor-type').addEventListener('change', updateLaborRate);
+            document.getElementById('material-quality').addEventListener('change', updateCostPerSqFt);
+            updateLaborRate();
+            updateCostPerSqFt();
+        });
+    </script>
+</body>
+</html>
