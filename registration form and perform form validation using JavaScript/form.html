@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+    <style>
+        body {
+            background-color: pink;
+            font-family: Arial;
+        }
+
+        h1 {
+            color: black;
+            text-align: center;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .form-container {
+            background: white;
+            width: 25%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 99%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 50px;
+            resize: none;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="submit"], input[type="reset"] {
+            width: 48%;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: green;
+            color: white;
+        }
+
+        input[type="submit"]:hover {
+            background-color: darkgreen;
+        }
+
+        input[type="reset"] {
+            background-color: red;
+            color: white;
+        }
+
+        input[type="reset"]:hover {
+            background-color: darkred;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            let firstName = document.forms["regForm"]["first_name"].value.trim();
+            let lastName = document.forms["regForm"]["last_name"].value.trim();
+            let phone = document.forms["regForm"]["phone"].value.trim();
+            let email = document.forms["regForm"]["email"].value.trim();
+            let password = document.forms["regForm"]["pwd"].value.trim();
+            let gender = document.forms["regForm"]["gender"].value;
+            let course = document.forms["regForm"]["course"].value;
+            let pinCode = document.forms["regForm"]["pincode"].value.trim();
+
+            let namePattern = /^[A-Za-z]+$/;
+            let phonePattern = /^[0-9]{10}$/;
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            let passwordPattern = /^.{6,9}$/;
+            let pinPattern = /^[0-9]{6}$/;
+
+            if (!firstName.match(namePattern)) {
+                alert("First Name should contain only alphabets!");
+                return false;
+            }
+            if (!lastName.match(namePattern)) {
+                alert("Last Name should contain only alphabets!");
+                return false;
+            }
+            if (!phone.match(phonePattern)) {
+                alert("Phone number must be 10 digits!");
+                return false;
+            }
+            if (!email.match(emailPattern)) {
+                alert("Enter a valid email address containing '@'!");
+                return false;
+            }
+            if (!password.match(passwordPattern)) {
+                alert("Password must be between 6 to 9 characters!");
+                return false;
+            }
+            if (!gender) {
+                alert("Please select your gender!");
+                return false;
+            }
+            if (course === "course") {
+                alert("Please select a course!");
+                return false;
+            }
+            if (!pinCode.match(pinPattern)) {
+                alert("PIN Code must be 6 digits!");
+                return false;
+            }
+            alert("Registered Successfully!");
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h1>Course Registration Form</h1>
+    <div class="form-container">
+        <form name="regForm" onsubmit="return validateForm()">
+            <label>First Name:</label>
+            <input type="text" name="first_name" oninput="this.value=this.value.replace(/[^A-Za-z]/g, '')">
+
+            <label>Last Name:</label>
+            <input type="text" name="last_name" oninput="this.value=this.value.replace(/[^A-Za-z]/g, '')">
+
+            <label>Gender:</label>
+            <div class="radio-group">
+                <input type="radio" name="gender" value="Male"> Male
+                <input type="radio" name="gender" value="Female"> Female
+                <input type="radio" name="gender" value="Other"> Other
+            </div>
+
+            <label>Course:</label>
+            <select name="course"> 
+                <option value="course">Select Course</option> 
+                <option value="HCI">Design and Implementation of Human-Computer Interface</option> 
+                <option value="AI">Artificial Intelligence and Machine Learning</option> 
+                <option value="CyberSec">Cybersecurity and Ethical Hacking</option> 
+                <option value="DSA">Data Structures and Algorithms</option> 
+                <option value="SoftwareEng">Software Engineering and Development</option> 
+            </select>
+
+            <label>Phone Number:</label>
+            <input type="tel" name="phone" placeholder="Enter phone number" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g, '')">
+
+            <label>Email ID:</label>
+            <input type="email" name="email" placeholder="Enter your email">
+
+            <label>Address for Communication:</label>
+            <textarea name="address" rows="3" placeholder="Enter address"></textarea>
+
+            <label>State:</label>
+            <select name="state">
+                <option value="">Select State</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+            </select>
+
+            <label>PIN Code:</label>
+            <input type="text" name="pincode" placeholder="Enter 6-digit PIN Code" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g, '')">
+
+            <label>Password:</label>
+            <input type="password" name="pwd" required maxlength="9" placeholder="Enter your password">
+
+            <input type="submit" value="Submit"/> 
+            <input type="reset" value="Reset"/>
+        </form>
+    </div>
+</body>
+</html>

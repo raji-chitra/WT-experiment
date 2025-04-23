@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Educational Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('f.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(0, 47, 108, 0.9);
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: rgba(0, 93, 178, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            background-color: #fff;
+            color: #005db2;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #003e6b;
+            color: white;
+        }
+
+        main {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .course-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .course {
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .course:hover {
+            transform: scale(1.05);
+        }
+
+        .course img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        footer {
+            background-color: rgba(0, 47, 108, 0.9);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Our Courses</h1>
+    <p>Explore our range of educational courses and enhance your learning.</p>
+</header>
+
+<nav>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="login.html">Login</a>
+    </div>
+    
+    <input type="text" class="search-bar" placeholder="Search courses...">
+    
+   
+</nav>
+
+<main>
+    <div class="course-container">
+        <div class="course">
+            <h2>Mathematics</h2>
+            <p>Master the fundamentals of algebra, calculus, and more.</p>
+           
+        </div>
+
+        <div class="course">
+            <h2>Computer Science</h2>
+            <p>Learn programming, algorithms, and web development.</p>
+           
+        </div>
+
+        <div class="course">
+            <h2>Physics</h2>
+            <p>Explore the laws of the universe with in-depth physics courses.</p>
+            
+        </div>
+
+        <div class="course">
+            <h2>Biology</h2>
+            <p>Dive into the study of life sciences and human anatomy.</p>
+           
+        </div>
+
+        <div class="course">
+            <h2>English Literature</h2>
+            <p>Improve your language skills with classic and modern literature.</p>
+            
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Educational Portal. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
